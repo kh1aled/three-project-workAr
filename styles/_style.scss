@@ -1,0 +1,864 @@
+@use "./variables/colors" as *;
+@use "./variables/mediaQuery" as *;
+@use "./mixins" as *;
+@use "./fonts" as *;
+
+$padding: 1.5rem;
+$gap: 1rem;
+$gap-1: 7rem;
+$gap-2: 10vh;
+$gap-3: 2vh;
+$gap-4: 0.5rem;
+$border-radius: 1.25rem;
+$width: 85%;
+%fixed-position {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+%overlay {
+  width: 100vw;
+  height: 100vh;
+  @extend %fixed-position;
+  z-index: 10000;
+  background-color: $overlay;
+}
+%phone-child {
+  content: "";
+  width: 100%;
+  border-bottom: 0.1875rem solid $black-1;
+  position: absolute;
+  left: 0;
+}
+%text {
+  padding: 1.875vh;
+  color: $black-1;
+  font-size: 3vh;
+  font-family: NotoKufiArabic-SemiBold;
+  text-align: center;
+  &::first-letter {
+    text-transform: capitalize;
+  }
+  @include mediaQuery($medScreen_min_width) {
+    & {
+      padding: 0.9375rem;
+      font-size: 1.5rem;
+    }
+  }
+}
+%width {
+  width: calc((100% - $gap) / 2);
+}
+.container {
+  width: 100%;
+  height: 100%;
+  padding: 0 0.9375rem;
+  margin-right: auto;
+  margin-left: auto;
+
+  @include mediaQuery($smallScreen_min_width) {
+    max-width: 33.75rem;
+  }
+
+  @include mediaQuery($medScreen_min_width) {
+    max-width: 45rem;
+  }
+
+  @include mediaQuery($largeScreen_min_width) {
+    max-width: 60rem;
+  }
+
+  @include mediaQuery($XlargeScreen_min_width) {
+    max-width: 83.125rem;
+  }
+}
+.icon {
+  height: 100%;
+  max-height: 3rem;
+  aspect-ratio: 1;
+  position: relative;
+  z-index: 1000;
+  background: linear-gradient(to bottom, $yellow-3 2%, $yellow-2);
+  color: $white-1;
+  font-size: 1.25rem;
+  border: 0.25rem solid $blue-1;
+  border-radius: 27%;
+  box-shadow: 0 0.25rem 0.25rem $shadow-1;
+  .fa-solid {
+    filter: drop-shadow(0 0.25rem 0.25rem $shadow-1);
+  }
+
+  &.info {
+    transform-style: preserve-3d;
+
+    &.show {
+      &::before {
+        opacity: 1;
+        animation-name: visible;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+      }
+    }
+
+    &.hide {
+      &::before {
+        transform: translateZ(-1px) scaleX(0);
+      }
+    }
+
+    &::before {
+      content: attr(text);
+      height: 100%;
+      padding: 0.25rem 1.5rem;
+      position: absolute;
+      right: 80%;
+      transform: translateZ(-1px);
+      opacity: 0;
+      transform-origin: 100% 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $white-1;
+      color: $black-1;
+      font-size: 90%;
+      font-family: NotoKufiArabic-SemiBold;
+      white-space: nowrap;
+      border-radius: 0.75rem 0 0 0.75rem;
+      transition: 0.5s;
+      filter: drop-shadow(0 0.25rem 0.25rem $shadow-1);
+    }
+  }
+
+  &.pause {
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: calc(100vh - (2 * $padding));
+    transform: translateY(-100%);
+    transition: 0.5s;
+    visibility: hidden;
+    z-index: 111111111111;
+    .fa-solid {
+      &.hide {
+        display: none;
+      }
+    }
+  }
+}
+.game {
+  width: 100vw;
+  height: 100vh;
+  padding: $padding;
+  overflow: hidden;
+  background-size: cover;
+  background-position: 50% 100%;
+  visibility: hidden;
+  transform-origin: left top;
+  background-color: #b25179;
+
+  @include mediaQuery($mobile_min_width) {
+    padding: 1rem;
+  }
+
+  &.hideGame {
+    animation-name: hideGame;
+    animation-timing-function: linear;
+    animation-duration: 0.7s;
+    animation-iteration-count: 1;
+  }
+
+  .head {
+    height: 15%;
+    .controls {
+      height: 100%;
+      position: relative;
+    }
+
+    .scoreWrapper {
+      height: 90%;
+      max-height: 3rem;
+      visibility: hidden;
+
+      .scoreIcon {
+        width: 4.5rem;
+        aspect-ratio: 1;
+        position: relative;
+        z-index: 11;
+      }
+
+      .scoreItem {
+        height: 100%;
+        width: 15rem;
+        padding: 0 0.75rem;
+        margin-left: -2rem;
+        position: relative;
+        z-index: 10;
+        background-color: $white-1;
+        border-radius: 0 0.625rem 0.625rem 0;
+        box-shadow: 0 0.25rem 0.25rem 0 $shadow-1;
+
+        &::before {
+          content: "";
+          position: absolute;
+          width: var(--width);
+          height: 100%;
+          left: 0;
+          top: 0;
+          z-index: 9;
+          background-color: $green-1;
+          border-radius: inherit;
+        }
+
+        .score {
+          position: relative;
+          z-index: 10;
+          font-family: LilitaOne-Regular;
+          font-size: 1rem;
+          color: $black-1;
+        }
+      }
+    }
+  }
+  .homepage {
+    height: 60vh;
+    width: 100%;
+
+    @extend %fixed-position;
+    transform-origin: left top;
+    .title-image1,
+    .title-image2 {
+      position: relative;
+      @include mediaQuery($mobile_min_width) {
+        top: 14%;
+      }
+      @include mediaQuery($smallScreen_min_width) {
+        top: 5%;
+      }
+    }
+    .title-image1 {
+      width: 40%;
+      height: 44%;
+      top: -39%;
+      left: -16%;
+    }
+    .title-image2 {
+      width: 50%;
+      height: 65%;
+      top: 14%;
+      left: 2%;
+    }
+
+    .play {
+      width: 20vw;
+      height: 15vw;
+      position: absolute;
+      bottom: -15%;
+      left: 40%;
+      animation: animateBtn 2s ease-in-out alternate-reverse infinite;
+      @include mediaQuery($medScreen_max_width) {
+        bottom: -16%;
+      }
+      @include mediaQuery($smallScreen_max_width) {
+        bottom: -4%;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    &.hide {
+      animation-name: scaleDown;
+      animation-duration: 0.7s;
+      animation-iteration-count: 1;
+    }
+  }
+  .body {
+    height: 83%;
+    width: 100%;
+    visibility: hidden;
+
+    @include mediaQuery($mobile_max_width) {
+      height: 80%;
+    }
+
+    &.show {
+      visibility: visible;
+    }
+    .arrow {
+      width: 5%;
+      min-height: 12%;
+      padding: 0.5rem;
+      background-color: $white-1;
+      color: $black-1;
+      font-size: 2.375rem;
+      box-shadow: 0 0.25rem 0.25rem 0 $shadow-1;
+      transition: 0.5s;
+
+      @include mediaQuery($mobile_min_width) {
+        padding: 0;
+      }
+
+      .fa-solid {
+        filter: drop-shadow(0 0.25rem 0.25rem $shadow-1);
+      }
+
+      &.disabled {
+        color: $grey-1;
+      }
+
+      &:hover {
+        background-color: $white-4;
+      }
+    }
+    .body-wrapper {
+      gap: 14vh;
+      width: 90%;
+      @include mediaQuery($medScreen_max_width) {
+        & {
+          gap: 1rem;
+        }
+      }
+      @include mediaQuery($smallScreen_max_width) {
+        & {
+          gap: 6vh;
+        }
+      }
+      @include mediaQuery($Tablet_max_width) {
+        & {
+          gap: 15vh;
+        }
+      }
+      @include mediaQuery($mobile_max_width) {
+        & {
+          gap: 7vh;
+        }
+      }
+
+      .match-cards {
+        gap: $gap-3;
+        width: 100%;
+        height: 100%;
+        padding-top: 2rem !important;
+
+        @include mediaQuery($medScreen_max_width) {
+          padding-top: 0rem !important;
+        }
+        @include mediaQuery($smallScreen_max_width) {
+          padding-top: 0rem !important;
+        }
+        @include mediaQuery($Tablet_max_width) {
+          padding-top: 1.2rem !important;
+        }
+        @include mediaQuery($mobile_max_width) {
+          padding-top: 1rem !important;
+        }
+        .match-card-wrapper {
+          width: calc((100% - $gap-3) / 4);
+          @include mediaQuery($Tablet_max_width) {
+            width: calc((100% - $gap-4) / 4);
+          }
+          .match-card {
+            width: 100%;
+            border-radius: 1.25rem;
+            box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
+            visibility: hidden;
+            cursor: pointer;
+            background: linear-gradient(180deg, #ffcd83 0%, #fff1c4 67.5%);
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2509803922);
+            font-size: 3.4vh;
+            padding: 1vh 2vw;
+            font-family: Noto Sans Malayalam;
+            font-weight: 700;
+            text-align: center;
+
+            &.show {
+              animation-name: showCards2;
+              animation-duration: 0.7s;
+              animation-timing-function: ease;
+              animation-iteration-count: 1;
+            }
+            &.vibrate {
+              animation-name: vibrate;
+              animation-duration: 0.5s;
+              animation-iteration-count: 1;
+            }
+          }
+        }
+      }
+      .cards {
+        max-height: calc((100% - $gap-2) * 0.8);
+        gap: $gap-3;
+        .card-item {
+          @extend %width;
+          color: $black-1;
+          visibility: hidden;
+          &.show {
+            animation-name: showCards;
+            animation-duration: 0.4s;
+            animation-timing-function: ease;
+            animation-iteration-count: 1;
+          }
+          .img {
+            width: 100%;
+            height: 80%;
+            margin: auto;
+            @include mediaQuery($largeScreen_min_width) {
+              & {
+                width: $width;
+              }
+            }
+            .img-wrapper {
+              padding: 4vh 2vh;
+              gap: 3vh;
+              flex-direction: column;
+              background-color: var(--ah-white-hover);
+              img {
+                width: 100%;
+                height: 100%;
+              }
+              h3 {
+                font-family: Noto Sans Malayalam;
+                font-size: 5vh;
+                font-weight: 700;
+                line-height: 3vh;
+              }
+            }
+          }
+          .text {
+            width: 100%;
+            padding: 2%;
+            @extend %text;
+            background-color: $white-1;
+            color: transparent;
+            box-shadow: 0 0.25rem 0.25rem $shadow-1;
+            border: 0.3125rem solid transparent;
+            font-size: 3vh;
+            height: 10vh;
+            &.active {
+              background: #dd6a00;
+              color: #ffffff !important;
+              font-family: Mochiy Pop P One;
+              font-weight: bold;
+              font-size: 4vh;
+              text-align: center;
+              font-size: 4vh;
+              border-bottom-left-radius: 5px;
+              border-bottom-right-radius: 5px;
+            }
+            &.animate {
+              animation-name: showCards;
+              animation-duration: 0.5s;
+              animation-iteration-count: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.pop-overlay {
+  @extend %overlay;
+  background-color: $overlay-1;
+  visibility: hidden;
+}
+.popup {
+  width: 70vw;
+  height: 40vh;
+  max-height: 90%;
+  padding: 2rem;
+  @extend %fixed-position;
+  z-index: 100000;
+  background-color: $white-1;
+  text-align: center;
+  border-radius: 1rem;
+  visibility: hidden;
+  .phone {
+    width: 2.5rem;
+    height: 4.5rem;
+    position: relative;
+    flex-shrink: 0;
+    border: 0.1875rem solid $black-1;
+    border-radius: 0.3125rem;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-name: rotatePhone;
+    animation-duration: 2s;
+
+    &::after {
+      @extend %phone-child;
+      top: 9%;
+    }
+
+    &::before {
+      @extend %phone-child;
+      bottom: 9%;
+    }
+  }
+  .message {
+    font-family: DG-3asomy-Regular;
+    text-transform: uppercase;
+    font-size: 3rem;
+  }
+}
+.success-wrapper {
+  width: 60%;
+  @extend %fixed-position;
+  z-index: 999999;
+  transition: 0.4s;
+  visibility: hidden;
+
+  &.show {
+    animation-name: successScaleUp;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+
+  &.hide {
+    animation-name: successScaleDown;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+
+  @include mediaQuery($medScreen_min_width) {
+    & {
+      width: 45%;
+    }
+  }
+
+  @include mediaQuery($largeScreen_min_width) {
+    & {
+      width: 40%;
+    }
+  }
+
+  @include mediaQuery($XlargeScreen_min_width) {
+    & {
+      width: 30%;
+    }
+  }
+
+  @include mediaQuery($XXlargeScreen_min_width) {
+    & {
+      width: 25%;
+    }
+  }
+
+  .success-card {
+    height: 70vh;
+    position: relative;
+    border-top-right-radius: 0 !important;
+    background: linear-gradient(180deg, $white-3 33.31%, $yellow-3 117.3%);
+    @include mediaQuery($largeScreen_min_width) {
+      & {
+        height: 60vh;
+      }
+    }
+    .closeModal {
+      width: 11%;
+      aspect-ratio: 1;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transform: translate(40%, -36%);
+      background-color: $oranger-1;
+      color: $white-1;
+      font-size: 115%;
+
+      &.animate {
+        .fa-solid {
+          animation-name: rotate;
+          animation-duration: 0.5s;
+          animation-timing-function: ease-in-out;
+          animation-iteration-count: 1;
+        }
+      }
+    }
+
+    .card-wrapper {
+      background: linear-gradient(0deg, $yellow-6 10.87%, $white-1 124.72%);
+
+      .img-wrapper {
+        height: 40%;
+        width: 70%;
+        margin: 0 auto;
+        position: relative;
+        top: -3vh;
+        img {
+          transform: scaleX(-1);
+        }
+      }
+      .content-card {
+        height: 60%;
+
+        .outer-card {
+          height: 50%;
+          background-color: $oranger-1;
+          box-shadow: 0 0.25rem 0.25rem 0 $shadow-1;
+          transform: rotate(-1.5deg);
+
+          .text-card {
+            background: linear-gradient(
+              to bottom,
+              transparent 20%,
+              $orange-2 20% 45%,
+              transparent 45% 60%,
+              $orange-3 60% 80%,
+              transparent 80%
+            );
+            color: $black-1;
+            font-size: 140%;
+            text-transform: capitalize;
+            font-family: DG-3asomy-Regular;
+            .content {
+              order: 2;
+              .text {
+                position: relative;
+
+                &::before {
+                  content: attr(text);
+                  width: 100%;
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  z-index: -1;
+                  color: $white-1;
+                  font-size: inherit;
+                  -webkit-text-stroke-width: 0.15rem;
+                  -webkit-text-stroke-color: $white-1;
+                }
+              }
+            }
+
+            .score-icon-wrapper {
+              width: 4rem;
+              height: 80%;
+              order: 1;
+            }
+          }
+        }
+
+        .arrows {
+          padding: 0.75rem 1rem 0.5rem;
+          .arrow {
+            aspect-ratio: 1;
+            padding: 1vh 1.2vw;
+            background-color: $white-1;
+            font-size: 4vh;
+            box-shadow: 0 0.25rem 0.25rem 0 $shadow-1;
+
+            &.disabled {
+              color: $grey-1;
+            }
+
+            .fa-solid {
+              filter: drop-shadow(0 0.25rem 0.25rem $shadow-1);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.overlay {
+  @extend %overlay;
+  visibility: hidden;
+
+  &.show {
+    visibility: visible;
+  }
+}
+.pause-overlay {
+  width: 100vw;
+  height: 100vh;
+  max-height: 100%;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background-color: rgba(0, 0, 0, 0.94);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.hide {
+    display: none;
+  }
+  .message {
+    font-family: "DG-3asomy-Regular";
+    text-transform: uppercase;
+    font-size: 6rem;
+  }
+}
+
+/*animations*/
+@keyframes visible {
+  0% {
+    transform: translateZ(-1px) scaleX(0);
+  }
+
+  100% {
+    transform: translateZ(-1px) scaleX(1);
+  }
+}
+
+@keyframes hideGame {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes scaleDown {
+  0% {
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    top: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
+
+@keyframes showCards {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes showCards2 {
+  0%,
+  5% {
+    transform: rotateZ(0deg) scale(0);
+  }
+  15% {
+    transform: rotateZ(-15deg) scale(1.1);
+  }
+  20% {
+    transform: rotateZ(10deg);
+  }
+  25% {
+    transform: rotateZ(-10deg);
+  }
+  30% {
+    transform: rotateZ(6deg);
+  }
+  35% {
+    transform: rotateZ(-4deg) scale(1.1);
+  }
+  40%,
+  100% {
+    transform: rotateZ(0deg) scale(1);
+  }
+}
+@keyframes vibrate {
+  0% {
+    transform: rotate(-10deg);
+  }
+
+  25% {
+    transform: rotate(0);
+  }
+
+  50% {
+    transform: rotate(10deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+@keyframes successScaleUp {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes successScaleDown {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotatePhone {
+  0%,
+  10% {
+    transform: rotate(0deg);
+  }
+  40%,
+  60% {
+    transform: rotate(90deg);
+  }
+  95%,
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes animateBtn {
+  0%,
+  5% {
+    transform: rotateZ(0deg);
+  }
+  15% {
+    transform: rotateZ(-15deg);
+  }
+  20% {
+    transform: rotateZ(10deg);
+  }
+  25% {
+    transform: rotateZ(-10deg);
+  }
+  30% {
+    transform: rotateZ(6deg);
+  }
+  35% {
+    transform: rotateZ(-4deg);
+  }
+  40%,
+  100% {
+    transform: rotateZ(0deg);
+  }
+}

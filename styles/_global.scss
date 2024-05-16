@@ -1,0 +1,39 @@
+@use "./mixins.scss" as *;
+@use "./variables/mediaQuery.scss" as *;
+
+%reset {
+  margin: 0;
+  padding: 0;
+}
+html {
+  height: 100%;
+  @extend %reset;
+  direction: rtl;
+  @include mediaQuery($Tablet_max_width) {
+    font-size: 2.75vw;
+  }
+
+  @include mediaQuery($XXXlargeScreen_min_width) {
+    font-size: 1vw;
+  }
+}
+body {
+  height: 100%;
+}
+* {
+  @extend %reset;
+  box-sizing: border-box;
+  user-select: none;
+  outline: none;
+  border: none;
+}
+ul {
+  list-style: none;
+}
+button {
+  background-color: transparent;
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+}

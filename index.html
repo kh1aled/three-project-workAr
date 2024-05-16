@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content=" This Is Description For Project 7" />
+    <title>Project AR</title>
+    <!--Bootstrap File-->
+    <link rel="stylesheet" href="./styles/bootstrap.min.css" />
+    <!--Main Css File-->
+    <link rel="stylesheet" href="./styles/main.css?1" />
+    <!--Icons Library-->
+    <link rel="stylesheet" href="./styles/all.min.css" />
+  </head>
+
+  <body>
+    <div class="pause-overlay hide">
+      <h1 class="message">
+        اللعبة توقفت
+      </h1>
+    </div>
+    <div class="pop-overlay"></div>
+    <div
+      class="popup d-flex flex-column justify-content-center align-items-center gap-3 rotate-phone"
+    >
+      <div class="message">اقلب الجهاز لتلعب</div>
+      <div class="phone"></div>
+    </div>
+    <div
+      class="game d-flex flex-column justify-content-between"
+      style="background-image: url('./media/images/bg.png')";
+    >
+      <div class="head d-flex justify-content-between">
+        <div class="controls d-flex gap-3">
+          <button
+            class="back icon d-flex justify-content-center align-items-center"
+          >
+            <i class="fa-solid fa-left-long"></i>
+          </button>
+          <button
+            class="info icon d-flex justify-content-center align-items-center"
+            text="املأ الفجوات باكتشافات كل عالم">
+            <i class="fa-solid fa-exclamation"></i>
+          </button>
+          <button
+            class="pause icon d-flex justify-content-center align-items-center"
+          >
+            <i class="fa-solid fa-pause"></i>
+            <i class="fa-solid fa-play hide"></i>
+          </button>
+        </div>
+        <div class="scoreWrapper d-flex align-items-center">
+          <div class="scoreItem d-flex align-items-center">
+            <div class="score"></div>
+          </div>
+          <div
+            class="scoreIcon d-flex align-items-center justify-content-center"
+          >
+            <img
+              src="./media/images/score.svg"
+              class="w-100 h-100 object-fit-contain"
+              alt="score-icon"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="homepage">
+        <img class="title-image1" src="./media/images/Group 444.png" alt="">
+        <img class="title-image2" src="./media/images/Group 445.png" alt="">
+        <button class="play p-3 position-absolute">
+          <img src="./media/images/button.png" alt="">
+        </button>
+      </div>
+      <div class="body d-flex align-items-center">
+        <button class="leftButton arrow disabled rounded-4 d-flex justify-content-center align-items-center">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <div class="body-wrapper d-flex flex-column">
+
+          <div class="match-cards d-flex align-items-center justify-content-between">
+            <div class="match-card-wrapper d-flex justify-content-center align-items-center">
+              <div class="match-card" data-index="1" draggable="true">
+                بقراءة الكتاب
+              </div>
+            </div>
+            <div class="match-card-wrapper d-flex justify-content-center align-items-center">
+              <div class="match-card" data-index="2" draggable="true">
+                تحت المطر
+              </div>
+            </div>
+            <div class="match-card-wrapper d-flex justify-content-center align-items-center">
+              <div class="match-card" data-index="3" draggable="true">
+                في البحر لرؤية أسماك القرش
+              </div>
+            </div>
+          </div>
+          <div class="cards d-flex justify-content-around">
+            <div class="card-item h-100 d-flex flex-column align-items-cente ">
+              <div class="img">
+                <div class="img-wrapper w-100 h-100 d-flex justify-content-center align-items-center"
+                  >
+                  <img src="./media/images/template1.png" alt="">
+                  <h3 class="text-center">يغوصون عميقا</h3>
+                </div>
+              </div>
+              <div class="text" droppable="true" draggable="false" data-index="1">
+                test
+              </div>
+            </div>
+            <div class="card-item h-100 d-flex flex-column align-items-center">
+              <div class="img">
+                <div 
+                  class="img-wrapper w-100 h-100 d-flex justify-content-center align-items-center">
+                  <img src="./media/images/template2.png" alt="">
+                  <h3 class="text-center">إنها تستمتع</h3>
+                </div>
+              </div>
+              <div class="text" droppable="true" draggable="false" data-index="2">
+                test
+              </div>
+            </div>
+            <div class="card-item h-100 d-flex flex-column align-items-center">
+              <div class="img">
+                <div
+                  class="img-wrapper w-100 h-100 d-flex justify-content-center align-items-center">
+                  <img src="./media/images/template3.png" alt="">
+                  <h3 class="text-center">هم يقفزون</h3>
+                </div>
+              </div>
+              <div class="text" droppable="true" draggable="false" data-index="3">
+                test
+              </div>
+            </div>
+          </div>
+  
+  
+        </div>
+        <button class="rightButton arrow rounded-4 d-flex justify-content-center align-items-center">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+      </div>
+    </div>
+    <div class="link-address" style="display: none">
+      https://www.google.com/
+    </div>
+    <div class="success-wrapper">
+      <div class="success-card rounded-5 p-3">
+        <button class="closeModal rounded-circle">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="card-wrapper h-100 rounded-5">
+          <div
+            class="img-wrapper d-flex justify-content-center align-items-center"
+          >
+            <img
+              src="./media/images/bunny.svg"
+              alt="bunny image"
+              class="w-100 h-100 object-fit-contain"
+            />
+          </div>
+          <div class="content-card d-flex flex-column">
+            <div class="outer-card rounded-1">
+              <div
+                class="text-card h-100 d-flex gap-3 justify-content-center align-items-center"
+              >
+                <div class="content d-flex flex-column align-items-center">
+                  <p class="message-text text m-0" text="الإجابات الصحيحة">
+                    الإجابات الصحيحة
+                  </p>
+                  <p
+                    class="score-text text m-0 d-flex justify-content-center gap-2 flex-wrap"
+                    text=""
+                  ></p>
+                </div>
+                <div class="score-icon-wrapper">
+                  <img
+                    src="./media/images/object.svg"
+                    alt="score image"
+                    class="w-100 h-100 object-fit-contain"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="arrows d-flex justify-content-between">
+              <button
+                class="left-arrow arrow disabled d-flex justify-content-center align-items-center rounded-circle"
+              >
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+              <button
+                class="right-arrow arrow d-flex justify-content-center align-items-center rounded-circle"
+              >
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="overlay"></div>
+    <audio id="start-audio" src="./media/audios/audio.mp3"></audio>
+    <audio id="correct-audio" src="./media/audios/audio.mp3"></audio>
+    <audio id="wrong-audio" src="./media/audios/audio.mp3"></audio>
+    <audio id="success" src="./media/audios/audio.mp3"></audio>
+    <audio id="1" src="./media/audios/audio.mp3"></audio>
+    <audio id="2" src="./media/audios/audio.mp3"></audio>
+    <script
+      id="DragDropTouch"
+      src="https://bernardo-castilho.github.io/DragDropTouch/DragDropTouch.js"
+    ></script>
+    <script>
+      const closeButton = document.querySelector(".closeModal");
+      const successItem = document.querySelector(".success-wrapper");
+      const overlay = document.querySelector(".overlay");
+      const gameContainer = document.querySelector(".game");
+
+      successItem.addEventListener("animationend", () => {
+        if (successItem.classList.contains("show")) {
+          successItem.classList.remove("show");
+        } else if (successItem.classList.contains("hide")) {
+          successItem.classList.remove("hide");
+          const link = document.querySelector(".link-address").textContent;
+          if (link !== "") {
+            gameContainer.classList.add("hideGame");
+            gameContainer.addEventListener("animationend", () => {
+              gameContainer.style.transform = "scale(0)";
+              gameContainer.classList.remove("hideGame");
+              window.location.href = link;
+            });
+          }
+        }
+      });
+      const addCloseAnimation = () => {
+        closeButton.classList.add("animate");
+        closeButton.addEventListener("animationend", () => {
+          closeButton.classList.remove("animate");
+        });
+        successItem.classList.add("hide");
+        successItem.style.visibility = "hidden";
+        overlay.classList.remove("show");
+      };
+      document.addEventListener("click", function (event) {
+        const isVisible =
+          window.getComputedStyle(successItem).visibility === "visible";
+        var isClickInside =
+          successItem.contains(event.target) || event.target === closeButton;
+        if (!isClickInside && isVisible) {
+          addCloseAnimation();
+        }
+      });
+      closeButton.addEventListener("click", () => {
+        addCloseAnimation();
+      });
+    </script>
+    <script src="./JS/script.js?1" async></script>
+  </body>
+</html>
