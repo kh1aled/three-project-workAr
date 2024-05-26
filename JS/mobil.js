@@ -1,15 +1,14 @@
-
 const popupModal = document.querySelector(".popup");
 const popupOverlay = document.querySelector(".pop-overlay");
 const game = document.querySelector(".game");
 const playButton = document.querySelector(".game .homepage .play");
+const pausedOverlay = document.querySelector(".pause-overlay");
 const homepage = document.querySelector(".game .homepage");
 const body = document.querySelector(".body");
 const infoIcon = document.querySelector(".info.icon");
 const scoreWrapper = document.querySelector(".game .scoreWrapper");
 const score = document.querySelector(".game .scoreItem .score");
 const cardItems = document.querySelectorAll(".cards .card-item");
-const pausedOverlay = document.querySelector(".pause-overlay");
 const textItems = document.querySelectorAll(
   ".match-cards .match-card-wrapper .match-card"
 );
@@ -18,12 +17,12 @@ const successModal = document.querySelector(".success-wrapper");
 const arrows = document.querySelectorAll(".game .body .arrow");
 const pauseButton = document.querySelector(".game .pause.icon");
 const iconsArr = [...arrows, pauseButton];
-let theTimer = 0;
-let isRunning = false;
-let animationCounter = 0;
-let counter = 0;
-let textCounter = 0;
-let wrongAnswers = 0;
+let theTimer = 0,
+animationCounter = 0,
+ counter = 0,
+ isRunning = false,
+ textCounter = 0,
+ wrongAnswers = 0;
 const animateInfo = () => {
   infoIcon.classList.add("show");
   infoIcon.addEventListener("animationend", () => {
@@ -70,11 +69,12 @@ function animateMatchCard() {
   });
 }
 
-playButton.addEventListener("click", () => {
-  openFullscreen()
+playButton.addEventListener("touchstart", () => {
+  console.log('start');
+  openFullscreen();
   document.querySelector("#start-audio").play();
+  game.style.backgroundImage = "url(./media/images/bg2.png)";
   homepage.classList.add("hide");
-  game.style.backgroundImage = "url('../media/images/bg2.png')";
   homepage.addEventListener("animationend", () => {
     homepage.classList.remove("hide");
     homepage.style.visibility = "hidden";
@@ -83,7 +83,6 @@ playButton.addEventListener("click", () => {
     body.classList.add("show");
     pauseButton.style.visibility = "visible";
     animateNext(animationCounter);
-
   });
   if (!isRunning) {
     startTimer();
@@ -92,7 +91,8 @@ playButton.addEventListener("click", () => {
   }
 });
 
-pauseButton.addEventListener("click", () => {
+
+pauseButton.addEventListener("touchstart", () => {
   const hiddenIcon = pauseButton.querySelector("i.hide");
   const shownIcon = pauseButton.querySelector("i:not(.hide)");
   hiddenIcon.classList.remove("hide");
@@ -106,15 +106,16 @@ pauseButton.addEventListener("click", () => {
 });
 
 textItems.forEach((textItem) => {
-  textItem.addEventListener("dragstart", (event) => {
+  textItem.addEventListener("touchstart", (event) => {
     event.stopPropagation();
+    event.target.dataset.dragging = true;
     event.dataTransfer.setData("id", textItem.dataset.index);
     document.getElementById("start-audio").play();
   });
   textItem.addEventListener("drag", (event) => {
     textItem.style.opacity = "0";
   });
-  textItem.addEventListener("dragend", (event) => {
+  textItem.addEventListener("touchend", (event) => {
     textItem.style.opacity = "1";
   });
 });
@@ -138,10 +139,10 @@ cardsText.forEach((cardItem) => {
         ".score"
       ).textContent = `${counter}/${textItems.length}`;
       document
-        .querySelector(":root")
-        .style.setProperty("--width", `${(100 / textItems.length) * counter}%`);
-        cardItem.classList.add("active")
+      .querySelector(":root")
+      .style.setProperty("--width", `${(100 / textItems.length) * counter}%`);
       cardItem.textContent = textContent;
+      cardItem.classList.add("active")
       cardItem.classList.add("animate");
       cardItem.addEventListener("animationend", () => {
         cardItem.classList.remove("animate");
@@ -151,6 +152,7 @@ cardsText.forEach((cardItem) => {
       audio.play();
       audio.addEventListener("ended", () => {
         if (counter === cardsText.length) {
+
           const text = document.querySelector(".text-card .score-text");
           text.textContent = `${counter}/${cardsText.length}`;
           text.setAttribute("text", `${counter}/${cardsText.length}`);
@@ -229,10 +231,8 @@ window.addEventListener("orientationchange", function () {
 });
 
 
-
-
-
 var elem = document.body;
+
 function openFullscreen() {
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
@@ -261,3 +261,23 @@ function stopTimer() {
   console.log("the timer is stopped....");
   isRunning = false;
 }
+
+
+function loadScript(src){
+  var script = document.querySelector(".script");
+  console.log(script);
+  script.src = src;
+  script.async = true;
+  document.head.appendChild(script);
+}
+
+function checkScript(){
+  if('ontouchstart' in window){
+    loadScript('./JS/mobil.js');
+    console.log("mobil");
+  }else{
+    loadScript('./JS/script.js');
+    console.log('computer');
+  }
+}
+checkScript();

@@ -432,10 +432,12 @@ $width: 85%;
             @extend %text;
             background-color: $white-1;
             color: transparent;
-            box-shadow: 0 0.25rem 0.25rem $shadow-1;
+            box-shadow: -1px 9px 1rem 4px rgb(0 0 0 / 73%);
             border: 0.3125rem solid transparent;
             font-size: 3vh;
             height: 10vh;
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
             &.active {
               background: #dd6a00;
               color: #ffffff !important;
@@ -448,9 +450,7 @@ $width: 85%;
               border-bottom-right-radius: 5px;
             }
             &.animate {
-              animation-name: showCards;
-              animation-duration: 0.5s;
-              animation-iteration-count: 1;
+              animation:trueAnswer 0.5s ease-in;
             }
           }
         }
@@ -730,6 +730,20 @@ $width: 85%;
   }
 }
 
+@keyframes trueAnswer {
+  0% {
+    width: 0;
+
+  }
+  50% {
+    width: 120%;
+    background-color: rgb(40, 187, 255);
+  }
+  100% {
+    width: 100%;
+
+  }
+}
 @keyframes showCards {
   0% {
     transform: scale(0);
