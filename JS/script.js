@@ -18,6 +18,7 @@ const successModal = document.querySelector(".success-wrapper");
 const arrows = document.querySelectorAll(".game .body .arrow");
 const pauseButton = document.querySelector(".game .pause.icon");
 const iconsArr = [...arrows, pauseButton];
+let answers = 0;
 let theTimer = 0;
 let isRunning = false;
 let animationCounter = 0;
@@ -124,6 +125,27 @@ cardsText.forEach((cardItem) => {
     event.preventDefault();
   });
   cardItem.addEventListener("drop", (event) => {
+    answers++;
+
+    var xhr = new XMLHttpRequest();
+
+
+    xhr.open('POST', '/update-database', true);
+
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.send(JSON.stringify({ newValue: answers }));
+
+    // تحديد ماذا يحدث عند استلام الرد من الخادم
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                console.log('تم تحديث البيانات بنجاح', xhr.responseText);
+            } else {
+                console.error('حدث خطأ أثناء تحديث البيانات');
+            }
+        }
+    };
     event.preventDefault();
     const index = cardItem.dataset.index;
     const textId = event.dataTransfer.getData("id");
