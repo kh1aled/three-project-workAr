@@ -237,23 +237,23 @@ $width: 85%;
       }
     }
     .title-image1 {
-      width: 40%;
-      height: 44%;
-      top: -39%;
-      left: -16%;
+      width: 43%;
+      height: 47%;
+      top: -20%;
+      left: -40%;
     }
     .title-image2 {
-      width: 50%;
+      width: 58%;
       height: 65%;
-      top: 14%;
-      left: 2%;
+      top: -20%;
+      left: -40%;
     }
 
     .play {
       width: 20vw;
       height: 15vw;
       position: absolute;
-      bottom: -15%;
+      bottom: -20%;
       left: 40%;
       animation: animateBtn 2s ease-in-out alternate-reverse infinite;
       @include mediaQuery($medScreen_max_width) {
